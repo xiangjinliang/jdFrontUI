@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>xjl test</title>
+    <script src="https://static.360buyimg.com/smart/jdsmart-1.0.3.js" type="text/javascript">	
+    </script>
+
+    <script>
+    	function setmywindows(){
+			var clientWidth = document.documentElement.clientWidth || window.innerWidth;
+			var rem = 100;
+			if (clientWidth != baseWidth) {
+			    rem = Math.floor(clientWidth / baseWidth * baseFontSize);
+			}
+			document.querySelector('html').style.fontSize = rem + 'px';
+    	}
+    	document.addEventListener("resize",setmywindows);
+    </script>
+</head>
+<body>
+    <input id="inputTex" value="0">
+    <br>
+    <p>获取到的数据 </p>
+    <br />
+    <div id = "data" width = 400px height = 200px>    	
+    </div>
+    <button id="btn"  onclick="getDeviceSnap()" value="">获取数据</button>
+    <button id="btnctrl"  onclick="setDeviceCtrl()" value="">设置数据</button>
+    <button id="getNetType"  onclick="getNetType()" value="">获取网类型</button>
+    <button id="getusrId"  onclick="getUserInfo()" value="">获取设备ID</button>
+    <p>响应数据</p>
+    <br />
+    <div id = "snddata"> </div>
+    <div id = "rsp" width = 400 px height = 200px>rsp</div>    	
+	<div id = "rsp1" width = 400 px height = 200px>rsp1</div>        	
+	<div id = "rsp2" width = 400 px height = 200px>rsp2</div>
+    <script>
+    	document.getElementById("data").innerHTML = "test"
+    	
+    	suc = {"status":"1","digest":"1944568287","streams":[{"current_value":"1","stream_id":"Power"}]};
+		document.getElementById("data").innerHTML = suc.streams[0].stream_id+":"+suc.streams[0].current_value;
+		document.getElementById("inputTex").value = suc["streams"][0].current_value;
+    	
+    	
+    </script>
+    <script>    	    
+    	var power = "1";
+    	
+    	//test
+
+    	
+   		document.addEventListener('ready', function(){
+   			//console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
+   			alert("test hello world.")
+   		});
+   		btn = document.getElementById("btn");
+   		edit = document.getElementById("inputTex");
+   		function getDeviceSnap(){
+			console.log("test111.xjl");			
+			
+			JDSMART.io.getSnapshot( // 获取设备快照接口
+			  function (suc) {
+			    // 执行成功的回调
+			    
+
+			    document.getElementById("inputTex").value = suc;
+			    jstext = JSON.parse(suc);
+			    document.getElementById("data").innerHTML = typeof(suc);
+			    document.getElementById("data").innerHTML = jstext.streams[0].stream_id+":"+jstext.streams[0].current_value;
+			    
+			    
+			  },
+			  function (error) {
+			    // 执行失败的回调
+			    document.getElementById("data").innerHTML = error;
+			  }
+			);
+   		};
+   		
+   		function getNetType(){
+			JDSMART.app.getNetworkType( // 获取 APP 的网络状态
+			  function (suc) {
+			    //var networkType = suc.TypeName; // 返回网络类型 mobile，wifi
+				document.getElementById("getNetType").value=suc.typeName + typeof(suc.typeName);
+			  });
+   		}
+		function getUserInfo(){
+			
+			JDSMART.io.getUserId(
+			  //
+			  function (suc) {
+			    //执行成功后的回调
+			    //suc 就是 userid
+			    document.getElementById("getusrId").value ="设备ID："+suc;
+			    
+			  },
+			  function (error) {
+			    //执行失败后的回调
+			    document.getElementById("getusrId").value ="设备IDError："+error;
+			  });
+		}
+   		
+   		function controlDevice(x){
+   			
+   			console.log(typeof(x));
+   		}
+		
+		function setDeviceCtrl(){			
+			//ctrdata ={"snapshot":[{"current_value":"0","stream_id":"Power"}],"streams":[{"current_value":"1","stream_id":"Power"}]};
+			ctrdata ={"command":[{"current_value":"1","stream_id":"Power"}]}
+			if (power === "0")
+			{
+				ctrdata["command"][0].current_value = "1";
+				power = "1";
+			}
+			else{
+				ctrdata["command"][0].current_value = "0";
+				power = "0";
+			}
+
+			document.getElementById("snddata").innerHTML = ctrdata["command"][0].stream_id+":" +ctrdata["command"][0].current_value;
+			//controlDevice(ctrdata);
+			JDSMART.io.controlDevice( // 控制设备接口
+			  ctrdata,
+			  function (suc) {
+			    // 执行成功的回调
+			    if (typeof(suc) === "object")
+			    {
+			    	document.getElementById("rsp").innerHTML = "rsp"+typeof(suc)+":"+"=="+suc.streams[0].current_value;
+			    } else if(typeof(suc) ==="string")
+			    {
+			    	jsSuc = JSON.parse(suc);
+			    	document.getElementById("rsp").innerHTML = "rsp"+typeof(jsSuc)+":"+"=="+v.streams[0].current_value;
+			    }
+			    else{
+			    	document.getElementById("rsp").innerHTML = "unkown:"+typeof(suc);
+			    }
+			    
+			    //rspjs = JSON.parse(suc);
+			    //document.getElementById("rsp1").innerHTML ="rsp1"+typeof(rspjs)+":"+rspjs+"--"+rspjs.streams;
+			    this.getDeviceSnap();
+			  },
+			  function (error) {
+			    // 执行失败的回调
+			    document.getElementById("rsp").innerHTML = "errorInfo:"+error.errorInfo+"rrorcode:"+error.errorCode;
+			  }
+			);
+		}
+    </script>
+</body>
+</html>
