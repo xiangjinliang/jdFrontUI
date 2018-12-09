@@ -27,7 +27,7 @@
     		text-align: center;
     		
     	}
-		div#h1{
+		div#hx{
     		width: 50%;
     		height: 20%;
     		background-color: sandybrown;
@@ -35,7 +35,7 @@
     		font: "楷体";
     		font-size: 28px;
     		color: blue;
-    		text-align: center;
+    		text-align: left;
     	}
     	div#switch{
     		width: 100%;
@@ -80,8 +80,12 @@
 <body>
 	<div id = "container">
 		<div id = "header">
-			<div id="h1" align="center"><h2>在线状态</h2></div> 
-			<div id="h1" align="center"><h2><input id="onlines" onclick="getDeviceSnap()" type="button" value="在线"></h2></div>
+			<div id="hx" align="center"><h2>在线状态</h2></div> 
+			<div id="hx" align="left">
+				<li type="circle"><input id="onlines" onclick="getDeviceSnap()" type="button" value="在线"></li>
+				<li type="circle"><input id="netTypes" onclick="getNetType()" type="button" value="wifi"></li>
+				<li type="circle"><input id="usrId" onclick="getUserInfo()" type="button" value="设备ID:" ></li>
+			</div>
 		</div>
 		<div id="line"></div>
 		<div id = "switch">
@@ -111,21 +115,39 @@
 	</div>
 	
 	<script>    	    
+		var refreshflag = false;
     	//功能代码    	
    		document.addEventListener('load', function(){
    			//console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
    			JDSMART.app.toast({message:"ready.."});
    		});
-
-   		document.addEventListener("touchmove", function(){
-   			//console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
-   			JDSMART.app.toast({message:"刷新页面.."});
-   			this.getDeviceSnap();
-   		});
-   		
-				
-   		function getDeviceSnap(){
 	
+   		
+   		function getNetType(){
+   			/*
+			JDSMART.app.getNetworkType( // 获取 APP 的网络状态
+			  function (suc) {
+			    //var networkType = suc.TypeName; // 返回网络类型 mobile，wifi
+				document.getElementById("netTypes").value=suc.typeName + typeof(suc.typeName);
+			  });*/
+			 JDSMART.app.toast({message:"fot test get nettype."});
+   		}
+		function getUserInfo(){
+			/*
+			JDSMART.io.getUserId(
+			  //
+			  function (suc) {
+			    //执行成功后的回调
+			    //suc 就是 userid
+			    document.getElementById("usrId").value ="设备ID："+suc;
+			    
+			  },
+			  function (error) {
+			    //执行失败后的回调
+			  });*/
+			 JDSMART.app.toast({message:"fot test get usrInfo."});
+		}
+   		function getDeviceSnap(){
 	   		var onstaus = document.getElementById("onlines");
  			var power1 = document.getElementById("pw1");
 			var power2 = document.getElementById("pw2");
@@ -153,10 +175,10 @@
 			  },
 			  function (error) {
 			    // 执行失败的回调
-			    JDSMART.app.toast({message:"返回数据错误："+suc});
+			    JDSMART.app.toast({message:"获取快照数据错误"+"errorInfo:"+error.errorInfo+"rrorcode:"+error.errorCode});
 			  }
 			);
-   		};
+   		}
 
 		function setDeviceCtrl(){			
 
@@ -180,20 +202,62 @@
 			  function (suc) {
 			    // 执行成功的回调
 			    JDSMART.app.toast({message:"执行成功"});
-			    this.getDeviceSnap();
+			    //填写执行成功返回的数据
+		    	pw1ret = suc.streams[0].current_value;;
+		    	if(pw1ret === "1"){
+		    		power1.value = "开"
+		    	}else{
+		    		power1.value = "关";
+		    	}			    
 			  },
 			  function (error) {
 			    // 执行失败的回调
-			    JDSMART.app.toast({message:"返回数据错误"});
+			    JDSMART.app.toast({message:"返回数据错误"+"errorInfo:"+error.errorInfo+"rrorcode:"+error.errorCode});
+			    this.getDeviceSnap();
 			  }
 			);   		  		
 		}
-		window.onload = getDeviceSnap;
-		
+   		document.addEventListener("touchmove", function(){
+   			//console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
+   			JDSMART.app.toast({message:"刷新页面.."});
+   			//this.getDeviceSnap();
+   		});
+   		
+   		function setTimerTask(){
+   			
+   			var timer = 10000;
+   			/* 定时获取数据快照， 每15秒获取一次 */
+   			console.log("timer test.")
+   			try{
+   				getDeviceSnap();
+   			}
+   			catch(err){
+   				console.log("timer test err,."+err)
+   				setTimeout(function() {
+		 　　			setTimeout("setTimerTask()", timer);		 
+		 　　		}, timer);
+		 
+		 		return;
+   			}
+   			
+   			setTimeout(function() {
+		 　　	setTimeout("setTimerTask()", timer);
+		 
+		 　　}, timer);
+		 
+   		}	
+   		
+   		setTimerTask();
+		/* 加载时执行*/
+		function myOnload(){
+			//getDeviceSnap();
+			JDSMART.app.toast({message:"加载页面中.."});
+		}
+		window.onload = myOnload;		
 		JDSMART.ready(function () {
 		  //控制事件…
 		    JDSMART.app.toast({message:"刷新页面.."});
-			this.getDeviceSnap();
+			
 		});
 
     </script>
