@@ -62,15 +62,12 @@
 			
 			JDSMART.io.getSnapshot( // 获取设备快照接口
 			  function (suc) {
-			    // 执行成功的回调
-			    
+			    // 执行成功的回调		    
 
 			    document.getElementById("inputTex").value = suc;
 			    jstext = JSON.parse(suc);
 			    document.getElementById("data").innerHTML = typeof(suc);
-			    document.getElementById("data").innerHTML = jstext.streams[0].stream_id+":"+jstext.streams[0].current_value;
-			    
-			    
+			    document.getElementById("data").innerHTML = jstext.streams[0].stream_id+":"+jstext.streams[0].current_value;	    
 			  },
 			  function (error) {
 			    // 执行失败的回调
@@ -126,18 +123,21 @@
 			  ctrdata,
 			  function (suc) {
 			    // 执行成功的回调
+			    
 			    if (typeof(suc) === "object")
 			    {
 			    	document.getElementById("rsp").innerHTML = "rsp"+typeof(suc)+":"+"=="+suc.streams[0].current_value;
 			    } else if(typeof(suc) ==="string")
 			    {
 			    	jsSuc = JSON.parse(suc);
-			    	document.getElementById("rsp").innerHTML = "rsp"+typeof(jsSuc)+":"+"=="+v.streams[0].current_value;
+			    	document.getElementById("rsp").innerHTML = "rsp"+typeof(jsSuc)+":"+"=="+jsSuc.streams[0].current_value;
+			    	//document.getElementById("rsp").innerHTML = "rsp:"+suc 
 			    }
 			    else{
 			    	document.getElementById("rsp").innerHTML = "unkown:"+typeof(suc);
 			    }
 			    
+			   //document.getElementById("rsp").innerHTML = typeof(suc);
 			    //rspjs = JSON.parse(suc);
 			    //document.getElementById("rsp1").innerHTML ="rsp1"+typeof(rspjs)+":"+rspjs+"--"+rspjs.streams;
 			    this.getDeviceSnap();

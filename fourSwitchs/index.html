@@ -200,15 +200,28 @@
 			JDSMART.io.controlDevice( // 控制设备接口
 			  ctrdata,
 			  function (suc) {
-			    // 执行成功的回调
-			    JDSMART.app.toast({message:"执行成功"});
+			    // 执行成功的回调			    
 			    //填写执行成功返回的数据
-		    	pw1ret = suc.streams[0].current_value;;
+			    if (typeof(suc) === "object")
+			    {
+			    	var pw1ret = suc.streams[0].current_value;
+			    } else if(typeof(suc) ==="string")
+			    {
+			    	jsSuc = JSON.parse(suc);
+			    	var pw1ret = jsSuc.streams[0].current_value;
+			    }
+			    else{
+			    	JDSMART.app.toast({message:"执行成功返回未知数据格式"});
+			    	this.getDeviceSnap();
+			    	return;
+			    }
+		    	//var pw1ret = suc.streams[0].current_value;
 		    	if(pw1ret === "1"){
-		    		power1.value = "开"
+		    		power1.value = "开";
 		    	}else{
 		    		power1.value = "关";
 		    	}			    
+		    	JDSMART.app.toast({message:"执行成功"});
 			  },
 			  function (error) {
 			    // 执行失败的回调
@@ -220,13 +233,13 @@
    		document.addEventListener("touchmove", function(){
    			//console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
    			JDSMART.app.toast({message:"刷新页面.."});
-   			//this.getDeviceSnap();
+   			this.getDeviceSnap();
    		});
-   		
+   		/*
    		function setTimerTask(){
    			
    			var timer = 10000;
-   			/* 定时获取数据快照， 每15秒获取一次 */
+
    			console.log("timer test.")
    			try{
    				getDeviceSnap();
@@ -245,19 +258,20 @@
 		 
 		 　　}, timer);
 		 
-   		}	
-   		
+   		}	   		
    		setTimerTask();
+   		*/
 		/* 加载时执行*/
 		function myOnload(){
-			//getDeviceSnap();
 			JDSMART.app.toast({message:"加载页面中.."});
 		}
 		window.onload = myOnload;		
+		/* 环境准备好了*/
 		JDSMART.ready(function () {
 		  //控制事件…
 		    JDSMART.app.toast({message:"刷新页面.."});
-			
+		    //一开始就刷新一次
+   			getDeviceSnap();
 		});
 
     </script>
