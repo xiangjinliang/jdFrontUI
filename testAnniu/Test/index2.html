@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>demo</title>               
+                <link rel="stylesheet" href="css/on_off_switch.css" type="text/css">
+	</head>
+ 
+	<body>
+		<script type="text/javascript">		
+			function onoffClick(){
+				var checkBtn = document.getElementById("onoffswitch");
+				console.log(checkBtn.checked)
+				//console.log(document.getElementById(onoffswitch).checked())		
+			}
+			
+			function testFuc(){
+				var checkBtn = document.getElementById("onoffswitch");
+				if(checkBtn.checked === true)
+					checkBtn.checked = false;
+				else
+					checkBtn.checked = true;
+				console.log(checkBtn.checked)
+			}
+		</script>
+		<div class="testswitch">
+			<input class="testswitch-checkbox" id="onoffswitch" onclick="onoffClick()" type="checkbox">
+			<label class="testswitch-label" for="onoffswitch">
+				<span class="testswitch-inner" data-on="ON" data-off="OFF"></span>
+				<span class="testswitch-switch"></span>
+			</label>
+		</div>
+		<div><input type="button" onclick="testFuc()" value="testCheck"></div>
+	</body>
+</html>

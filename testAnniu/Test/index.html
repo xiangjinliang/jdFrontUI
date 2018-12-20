@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title></title>
+    <style type="text/css">
+    	body{
+    		margin: 0px;
+    		align-content: center;
+    		
+    	}
+    	div#container{
+    		width: 100%;
+    		height: 730px;
+    		background-color: darkgrey;
+    		text-align: center;
+    	}
+		div#header{
+    		width: 100%;
+    		height: 20%;
+    		background-color: sandybrown;
+    		float: left;
+    		font: "黑体";
+    		font-size: 28px;
+    		color: blue;
+    		text-align: center;
+    		
+    	}
+		div#hx{
+    		width: 50%;
+    		height: 20%;
+    		background-color: sandybrown;
+    		float: left;
+    		font: "楷体";
+    		font-size: 28px;
+    		color: blue;
+    		text-align: left;
+    	}
+    	div#switch{
+    		width: 100%;
+    		height: 15%;
+    		background-color: blueviolet;
+    		text-align: center;
+
+    	}
+    	div#line{
+    		width: 100%;
+    		height: 10px;
+    		background-color: #F4A460;
+    		float: left;	
+    	}
+    	div#switchStatus{
+			width: 50%;
+    		height: 100%;
+    		background-color: #EEEEEE;    	
+    		float: left;	
+    		font: "冬青黑体";
+    		font-size: 24px;
+    		color: 666666;
+    		text-align: center;
+    	}
+    	div#powerStatus{
+			width: 50%;
+    		height: 100%;
+    		background-color: #EEEEEE;    
+    		float: left;
+			font: "冬青黑体";
+    		font-size: 24px;
+    		color: 666666;
+    		text-align: center;
+    	}
+    </style>
+	
+    <style>
+	    .onoffswitch {
+	        position: relative;
+	        width: 83px;
+	        -webkit-user-select: none;
+	        -moz-user-select: none;
+	        -ms-user-select: none;
+	    }
+	
+	    .onoffswitch-checkbox {
+	        display: none;
+	    }
+	
+	    .onoffswitch-label {
+	        display: block;
+	        overflow: hidden;
+	        cursor: pointer;
+	        border: 2px solid #999999;
+	        border-radius: 20px;
+	    }
+	
+	    .onoffswitch-inner {
+	        display: block;
+	        width: 200%;
+	        margin-left: -100%;
+	        transition: margin 0.3s ease-in 0s;
+	    }
+	
+	    .onoffswitch-inner:before,
+	    .onoffswitch-inner:after {
+	        display: block;
+	        float: left;
+	        width: 50%;
+	        height: 30px;
+	        padding: 0;
+	        line-height: 30px;
+	        font-size: 19px;
+	        color: white;
+	        font-family: Trebuchet, Arial, sans-serif;
+	        font-weight: bold;
+	        box-sizing: border-box;
+	    }
+	
+	    .onoffswitch-inner:before {
+	        content: "ON";
+	        padding-left: 13px;
+	        background-color: #4FACDB;
+	        color: #FFFFFF;
+	    }
+	
+	    .onoffswitch-inner:after {
+	        content: "OFF";
+	        padding-right: 13px;
+	        background-color: #F50E4C;
+	        color: #FAFAFA;
+	        text-align: right;
+	    }
+	
+	    .onoffswitch-switch {
+	        display: block;
+	        width: 21px;
+	        margin: 4.5px;
+	        background: #FFFFFF;
+	        position: absolute;
+	        top: 0;
+	        bottom: 0;
+	        right: 49px;
+	        border: 2px solid #999999;
+	        border-radius: 20px;
+	        transition: all 0.3s ease-in 0s;
+	    }
+	
+	    .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
+	        margin-left: 0;
+	    }
+	
+	    .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
+	        right: 0px;
+	    }
+    </style>
+
+
+    <script src="https://static.360buyimg.com/smart/jdsmart-1.0.3.js" type="text/javascript">	
+    </script>
+   
+</head>
+<body>
+	<div id = "container">
+		<div id = "header">
+			<div id="hx" align="center"><h2>在线状态</h2></div> 
+			<div id="hx" align="left">
+				<li type="circle"><input id="onlines" onclick="getDeviceSnap()" type="button" value="在线"></li>
+				<li type="circle"><input id="netTypes" onclick="getNetType()" type="button" value="wifi"></li>
+				<li type="circle"><input id="usrId" onclick="getUserInfo()" type="button" value="设备ID:" ></li>
+			</div>
+		</div>
+		<div id="line"></div>
+		<div id = "switch">
+			<div id="switchStatus" align="center"><h3>开关1状态</h3></div>
+			<div class="onoffswitch" id="powerStatus" align="center">
+		     <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+		     <label class="onoffswitch-label" for="myonoffswitch">
+		         <span class="onoffswitch-inner"></span>
+		         <span class="onoffswitch-switch"></span>
+		     </label>
+		 	</div>
+		</div>
+	<!--
+    	作者：xjl19@qq.com
+    	时间：2018-12-20
+    	描述：
+    	<div id="powerStatus" align="center"><h3><input id="pw1" onclick="setDeviceCtrl()" type="button" value="开"></h3></div>
+		
+	-->		
+		<div id="line"></div>
+		<div id = "switch">
+			<div id="switchStatus" align="center"><h3>开关2状态</h3></div>
+			<div id="powerStatus" align="center"><h3><input id="pw2" onclick="setDeviceCtrl()" type="button" value="关"></h3></div>
+		</div>
+		<div id="line"></div>
+		<div id = "switch">
+			<div id="switchStatus" align="center"><h3>开关3状态</h3></div>
+			<div id="powerStatus" align="center"><h3><input id="pw3" onclick="setDeviceCtrl()" type="button" value="关"></h3></div>
+		</div>
+		<div id="line"></div>
+		<div id = "switch">
+			<div id="switchStatus" align="center"><h3>开关4状态</h3></div>
+			<div id="powerStatus" align="center"><h3><input id="pw4" onclick="setDeviceCtrl()" type="button" value="关"></h3></div>
+		</div>
+		<div id="line"></div>
+		<div id = "vendorInfo">
+			<div id="info" align="center">成都蜂鸟科技技术有限公司@2019</div>
+			
+		</div>
+	</div>
+	
+	<script>    	    
+		var refreshflag = false;
+    	//功能代码    	
+   		document.addEventListener('load', function(){
+   			//console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
+   			JDSMART.app.toast({message:"ready.."});
+   		});
+	
+   		
+   		function getNetType(){
+   			/*
+			JDSMART.app.getNetworkType( // 获取 APP 的网络状态
+			  function (suc) {
+			    //var networkType = suc.TypeName; // 返回网络类型 mobile，wifi
+				document.getElementById("netTypes").value=suc.typeName + typeof(suc.typeName);
+			  });*/
+			 JDSMART.app.toast({message:"fot test get nettype."});
+   		}
+		function getUserInfo(){
+			/*
+			JDSMART.io.getUserId(
+			  //
+			  function (suc) {
+			    //执行成功后的回调
+			    //suc 就是 userid
+			    document.getElementById("usrId").value ="设备ID："+suc;
+			    
+			  },
+			  function (error) {
+			    //执行失败后的回调
+			  });*/
+			 JDSMART.app.toast({message:"fot test get usrInfo."});
+		}
+   		function getDeviceSnap(){
+	   		var onstaus = document.getElementById("onlines");
+ 			var power1 = document.getElementById("pw1");
+			var power2 = document.getElementById("pw2");
+			var power3 = document.getElementById("pw3");
+			var power4 = document.getElementById("pw4");
+			JDSMART.app.toast({message:"begin to get device snapshot."});
+			JDSMART.io.getSnapshot( // 获取设备快照接口
+			  function (suc) {
+					// 获取数据执行成功的回调	    	
+					JDSMART.app.toast({message:"获取数据成功："});
+					recdat = JSON.parse(suc);
+					
+			    	var devstatus = recdat.status;			    	
+			    	if(devstatus === "1"){
+			    		onstaus.value = "在线";
+			    	}else{
+			    		onstaus.value = "离线";
+			    	}			    	
+			    	pw1ret = recdat.streams[0].current_value;
+			    	if(pw1ret === "1"){
+			    		power1.value = "开"
+			    	}else{
+			    		power1.value = "关";
+			    	}			    	
+			  },
+			  function (error) {
+			    // 执行失败的回调
+			    JDSMART.app.toast({message:"获取快照数据错误"+"errorInfo:"+error.errorInfo+"rrorcode:"+error.errorCode});
+			  }
+			);
+   		}
+
+		function setDeviceCtrl(){			
+
+			ctrdata ={"command":[{"current_value":"1","stream_id":"Power"}]}
+			
+			var power1 = document.getElementById("pw1");
+			var power2 = document.getElementById("pw2");
+			var power3 = document.getElementById("pw3");
+			var power4 = document.getElementById("pw4");
+			
+			if (power1.value === "开")
+			{
+				ctrdata["command"][0].current_value = "0";				
+			}else{
+				ctrdata["command"][0].current_value = "1";
+			}				
+			JDSMART.app.toast({message:"begin to ctrl device"});
+			
+			JDSMART.io.controlDevice( // 控制设备接口
+			  ctrdata,
+			  function (suc) {
+			    // 执行成功的回调			    
+			    //填写执行成功返回的数据
+			    if (typeof(suc) === "object")
+			    {
+			    	var pw1ret = suc.streams[0].current_value;
+			    } else if(typeof(suc) ==="string")
+			    {
+			    	jsSuc = JSON.parse(suc);
+			    	var pw1ret = jsSuc.streams[0].current_value;
+			    }
+			    else{
+			    	JDSMART.app.toast({message:"执行成功返回未知数据格式"});
+			    	this.getDeviceSnap();
+			    	return;
+			    }
+		    	//var pw1ret = suc.streams[0].current_value;
+		    	if(pw1ret === "1"){
+		    		power1.value = "开";
+		    	}else{
+		    		power1.value = "关";
+		    	}			    
+		    	JDSMART.app.toast({message:"执行成功"});
+			  },
+			  function (error) {
+			    // 执行失败的回调
+			    JDSMART.app.toast({message:"返回数据错误"+"errorInfo:"+error.errorInfo+"rrorcode:"+error.errorCode});
+			    this.getDeviceSnap();
+			  }
+			);   		  		
+		}
+   		document.addEventListener("touchmove", function(){
+   			//console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
+   			JDSMART.app.toast({message:"刷新页面.."});
+   			this.getDeviceSnap();
+   		});
+   		/*
+   		function setTimerTask(){
+   			
+   			var timer = 10000;
+
+   			console.log("timer test.")
+   			try{
+   				getDeviceSnap();
+   			}
+   			catch(err){
+   				console.log("timer test err,."+err)
+   				setTimeout(function() {
+		 　　			setTimeout("setTimerTask()", timer);		 
+		 　　		}, timer);
+		 
+		 		return;
+   			}
+   			
+   			setTimeout(function() {
+		 　　	setTimeout("setTimerTask()", timer);
+		 
+		 　　}, timer);
+		 
+   		}	   		
+   		setTimerTask();
+   		*/
+		/* 加载时执行*/
+		function myOnload(){
+			JDSMART.app.toast({message:"加载页面中.."});
+		}
+		window.onload = myOnload;		
+		/* 环境准备好了*/
+		JDSMART.ready(function () {
+		  //控制事件…
+		    JDSMART.app.toast({message:"刷新页面.."});
+		    //一开始就刷新一次
+   			getDeviceSnap();
+		});
+
+    </script>
+</body>
+</html>
